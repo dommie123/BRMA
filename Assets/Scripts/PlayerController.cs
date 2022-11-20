@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 gravityVector = Physics.gravity;
         bool isGrounded = groundCheckComponent.IsTouchingGround();
-        Debug.Log(velocity);
+        // Debug.Log(velocity);
         // Debug.Log(isGrounded);
 
         // Check to stick player to ground if they are grounded, unless they decide to jump. Otherwise, laws of physics apply.
@@ -92,11 +92,14 @@ public class PlayerController : MonoBehaviour
         controller.Move(velocity * Time.deltaTime);
     }
 
+    
+
     private bool PlayerVelocityIsIncreasing()
     {
         return velocity.y < 0;
     }
 
+    // Control functions
     private void LookAround(InputAction.CallbackContext context)
     {
         springArm.Rotate(context);
@@ -175,4 +178,5 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("Opening Guardin Enhancement Menu");
     }
+    // End control functions
 }

@@ -32,6 +32,7 @@ public class SpringArm : MonoBehaviour
     [Space]
     public bool useControlRotation = true;
     public float mouseSensitivity = 500f;
+    public float joystickSensitivity;
 
     [Space]
     [Header("Debugging \n--------------")]
@@ -208,9 +209,9 @@ public class SpringArm : MonoBehaviour
     public void Rotate(InputAction.CallbackContext context)
     {
         // Increment yaw by Mouse X input
-        yaw += context.ReadValue<Vector2>().x * mouseSensitivity * Time.deltaTime;
+        yaw += context.ReadValue<Vector2>().x * joystickSensitivity * Time.deltaTime;
         // Decrement pitch by Mouse Y input
-        pitch -= context.ReadValue<Vector2>().y * mouseSensitivity * Time.deltaTime;
+        pitch -= context.ReadValue<Vector2>().y * joystickSensitivity * Time.deltaTime;
         // Clamp pitch so that we can't invert the the gameobject by mistake
         pitch = Mathf.Clamp(pitch, -90f, 90f);
         
