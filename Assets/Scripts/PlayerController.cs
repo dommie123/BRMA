@@ -5,14 +5,28 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private float speed;
+    [SerializeField] private float jumpHeight;
+    [SerializeField] private float gravity;
+    [SerializeField] private SpringArm springArm;
+
+    private bool jumped;
+    private CharacterController controller;
+    private PlayerActions playerActions;
+    private GroundCheck groundCheckComponent;
+    private Vector3 velocity;
+    private Vector3 stickToGround;
+
     private void Awake() 
     {
-        PlayerActions playerActions = new PlayerActions();
+        controller = GetComponent<CharacterController>();
+        groundCheckComponent = transform.Find("Ground Check").GetComponent<GroundCheck>();
+
+        playerActions = new PlayerActions();
         playerActions.PlayerController.Enable();
-        playerActions.PlayerController.Movement.performed += Movement;
+        // playerActions.PlayerController.Movement.performed += Movement;
         playerActions.PlayerController.LookAround.performed += LookAround;
-        playerActions.PlayerController.Jump.performed += Jump;
-        playerActions.PlayerController.Interact.performed += Interact;
+        playerActions.PlayerController.JumpInteract.performed += JumpInteract;
         playerActions.PlayerController.Attack.performed += Attack;
         playerActions.PlayerController.DodgeRoll.performed += DodgeRoll;
         playerActions.PlayerController.SpecialAttackWeapon.performed += SpecialAttackWeapon;
@@ -30,29 +44,60 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    private void Update()
+    private void FixedUpdate()
     {
-        
+        UpdatePhysics();
+        UpdateMovement();
     }
 
-    private void Movement(InputAction.CallbackContext context)
+    private void UpdateMovement()
     {
-        Debug.Log("Moving");
+        Vector2 inputVector = playerActions.PlayerController.Movement.ReadValue<Vector2>();
+
+        float x = inputVector.x;
+        float z = inputVector.y;
+        Vector3 movement = transform.right * x + transform.forward * z;
+
+        controller.Move(movement * speed * Time.deltaTime);
+    }
+
+    private void UpdatePhysics()
+    {
+        Vector3 gravityVector = Physics.gravity;
+        bool isGrounded = groundCheckComponent.IsTouchingGround();
+        Debug.Log(velocity);
+        // Debug.Log(isGrounded);
+
+        // Check to stick player to ground if they are grounded, unless they decide to jump. Otherwise, laws of physics apply.
+        if (isGrounded && PlayerVelocityIsIncreasing())
+        {
+            velocity = stickToGround;
+        }
+        else
+        {
+            velocity += gravityVector * Time.deltaTime;
+        }
+
+        controller.Move(velocity * Time.deltaTime);
+    }
+
+    private bool PlayerVelocityIsIncreasing()
+    {
+        return velocity.y < 0;
     }
 
     private void LookAround(InputAction.CallbackContext context)
     {
-        Debug.Log("Looking around");
+        springArm.Rotate(context);
     }
 
-    private void Jump(InputAction.CallbackContext context)
+    private void JumpInteract(InputAction.CallbackContext context)
     {
-        Debug.Log("Jumping");
-    }
-
-    private void Interact(InputAction.CallbackContext context)
-    {
-        Debug.Log("Interacting with object");
+        // TODO if near interactible object, trigger interact logic
+        // Debug.Log(jumpHeight * -2f * gravity);
+        if (groundCheckComponent.IsTouchingGround())
+            velocity.y = Mathf.Sqrt(jumpHeight * -1f * gravity);
+            // controller.Move(new Vector3(controller.velocity.x, jumpHeight, controller.velocity.z));
     }
 
     private void Attack(InputAction.CallbackContext context)
