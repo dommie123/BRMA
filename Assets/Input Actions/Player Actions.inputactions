@@ -15,7 +15,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Look around",
+                    "name": "Look Around",
                     "type": "Value",
                     "id": "c7e8c87e-c405-4fdb-9e27-313174ea2b0b",
                     "expectedControlType": "Vector2",
@@ -172,15 +172,125 @@
                     "isPartOfComposite": false
                 },
                 {
+                    "name": "2D Vector",
+                    "id": "7e43e3af-c40b-4978-b9fc-b6e9e20b59be",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "a9fa9444-f68b-4d33-abf6-bdac94b4cc41",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "3693cdf1-3b4a-45d8-8fef-aa2d3908a19d",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "0e0ee914-d44f-4320-a6ba-ef3cd343b022",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "f2cdf4b4-b59b-4c85-ba43-fb699d1579f4",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "085cd014-ef4c-4771-b7c3-e56f3c64357e",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Look around",
+                    "action": "Look Around",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "eae39b46-4788-462a-b394-74e7e8b1eed9",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look Around",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "35801556-1993-49e5-921a-61c1e8b8a5bc",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look Around",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "15d8c3c4-adfd-4da0-a07e-a217210aca93",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look Around",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "8fb78291-2b2f-4641-aeca-30d00d8c8408",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look Around",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "e016f17b-aaab-4252-b471-e2468f257014",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look Around",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
@@ -350,7 +460,7 @@
                 {
                     "name": "",
                     "id": "1a228ff5-a8f1-4952-af4f-e695e9cfee75",
-                    "path": "<Keyboard>/upArrow",
+                    "path": "<Keyboard>/numpad8",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -372,7 +482,7 @@
                 {
                     "name": "",
                     "id": "0d90a024-1dd6-43fa-b7ce-e3ead4bb9051",
-                    "path": "<Keyboard>/downArrow",
+                    "path": "<Keyboard>/numpad2",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -394,7 +504,7 @@
                 {
                     "name": "",
                     "id": "6a32519d-0d93-4e5e-aecf-4766d0d3cb16",
-                    "path": "<Keyboard>/leftArrow",
+                    "path": "<Keyboard>/numpad4",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -416,7 +526,7 @@
                 {
                     "name": "",
                     "id": "145e0392-2e39-4840-8b7c-359fc91a6522",
-                    "path": "<Keyboard>/rightArrow",
+                    "path": "<Keyboard>/numpad6",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
