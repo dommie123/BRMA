@@ -76,8 +76,9 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 gravityVector = Physics.gravity;
         bool isGrounded = groundCheckComponent.IsTouchingGround();
-        // Debug.Log(velocity);
-        // Debug.Log(isGrounded);
+
+        if (!isGrounded && transform.parent != null)
+            transform.parent = null;
 
         // Check to stick player to ground if they are grounded, unless they decide to jump. Otherwise, laws of physics apply.
         if (isGrounded && PlayerVelocityIsIncreasing())
@@ -90,9 +91,7 @@ public class PlayerController : MonoBehaviour
         }
 
         controller.Move(velocity * Time.deltaTime);
-    }
-
-    
+    } 
 
     private bool PlayerVelocityIsIncreasing()
     {

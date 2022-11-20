@@ -75,6 +75,7 @@ public class MovingPlatform : MonoBehaviour
 
     private void OnTriggerExit(Collider other) 
     {
+        Debug.Log("Trigger has left");
         int groundLayer = LayerMask.NameToLayer("Ground");
 
         if (other.gameObject.layer != groundLayer)
