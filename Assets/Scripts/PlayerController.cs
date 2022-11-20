@@ -54,9 +54,20 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 inputVector = playerActions.PlayerController.Movement.ReadValue<Vector2>();
 
+        // Player input coordinates
         float x = inputVector.x;
         float z = inputVector.y;
-        Vector3 movement = transform.right * x + transform.forward * z;
+
+        // Camera forward and right vectors
+        Vector3 forward = Camera.main.transform.forward;
+        Vector3 right = Camera.main.transform.right;
+
+        // Create new forward/right vectors relative to camera's rotation
+        Vector3 forwardRelativeVerticalInput = z * forward;
+        Vector3 rightRelativeVerticalInput = x * right;
+
+        // Add the two vectors to get the new movement vector.
+        Vector3 movement = forwardRelativeVerticalInput + rightRelativeVerticalInput;
 
         controller.Move(movement * speed * Time.deltaTime);
     }
@@ -96,7 +107,7 @@ public class PlayerController : MonoBehaviour
         // TODO if near interactible object, trigger interact logic
         // Debug.Log(jumpHeight * -2f * gravity);
         if (groundCheckComponent.IsTouchingGround())
-            velocity.y = Mathf.Sqrt(jumpHeight * -1f * gravity);
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             // controller.Move(new Vector3(controller.velocity.x, jumpHeight, controller.velocity.z));
     }
 
