@@ -16,15 +16,18 @@ public class PlayerController : MonoBehaviour
     private GroundCheck groundCheckComponent;
     private Vector3 velocity;
     private Vector3 stickToGround;
+    private HealthManager health;
+    private StatusManager status;
 
     private void Awake() 
     {
         controller = GetComponent<CharacterController>();
         groundCheckComponent = transform.Find("Ground Check").GetComponent<GroundCheck>();
+        health = GetComponent<HealthManager>();
+        status = GetComponent<StatusManager>();
 
         playerActions = new PlayerActions();
         playerActions.PlayerController.Enable();
-        // playerActions.PlayerController.Movement.performed += Movement;
         playerActions.PlayerController.LookAround.performed += LookAround;
         playerActions.PlayerController.JumpInteract.performed += JumpInteract;
         playerActions.PlayerController.Attack.performed += Attack;
@@ -47,7 +50,19 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         UpdatePhysics();
-        UpdateMovement();
+
+        if (health.EntityIsDead() || status.GetCurrentStatusEffects().Contains(StatusEffect.Stunned)) 
+        {
+            Debug.Log("I am dead/stunned!");
+            if (playerActions.PlayerController.enabled)
+                playerActions.PlayerController.Disable();
+            
+            return;
+        }
+        else if (!status.GetCurrentStatusEffects().Contains(StatusEffect.Frozen))
+        {
+            UpdateMovement();
+        }
     }
 
     private void UpdateMovement()
@@ -175,7 +190,7 @@ public class PlayerController : MonoBehaviour
 
     private void GuardianEnhancementMenu(InputAction.CallbackContext context)
     {
-        Debug.Log("Opening Guardin Enhancement Menu");
+        Debug.Log("Opening Guardian Enhancement Menu");
     }
     // End control functions
 }
