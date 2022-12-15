@@ -767,7 +767,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   psnInterval: 10
   brnSeconds: 5
-  setBlind: 1
+  setBlind: 0
 --- !u!1 &942159945
 GameObject:
   m_ObjectHideFlags: 0
