@@ -9,8 +9,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpHeight;
     [SerializeField] private float gravity;
     [SerializeField] private SpringArm springArm;
+    [SerializeField] private Light directionalLight;
 
     private bool jumped;
+    private float speedModifier;
     private CharacterController controller;
     private PlayerActions playerActions;
     private GroundCheck groundCheckComponent;
@@ -18,13 +20,17 @@ public class PlayerController : MonoBehaviour
     private Vector3 stickToGround;
     private HealthManager health;
     private StatusManager status;
+    private Light viewLight;
 
     private void Awake() 
     {
+        jumped = false;
+        speedModifier = 1f;
         controller = GetComponent<CharacterController>();
         groundCheckComponent = transform.Find("Ground Check").GetComponent<GroundCheck>();
         health = GetComponent<HealthManager>();
         status = GetComponent<StatusManager>();
+        viewLight = transform.Find("View Light").gameObject.GetComponent<Light>();
 
         playerActions = new PlayerActions();
         playerActions.PlayerController.Enable();
@@ -63,6 +69,8 @@ public class PlayerController : MonoBehaviour
         {
             UpdateMovement();
         }
+
+        UpdateAdditionalStatusEffects();
     }
 
     private void UpdateMovement()
@@ -84,7 +92,7 @@ public class PlayerController : MonoBehaviour
         // Add the two vectors to get the new movement vector.
         Vector3 movement = forwardRelativeVerticalInput + rightRelativeVerticalInput;
 
-        controller.Move(movement * speed * Time.deltaTime);
+        controller.Move(movement * (speed * speedModifier) * Time.deltaTime);
     }
 
     private void UpdatePhysics()
@@ -107,6 +115,35 @@ public class PlayerController : MonoBehaviour
 
         controller.Move(velocity * Time.deltaTime);
     } 
+
+    private void UpdateAdditionalStatusEffects()
+    {
+        List<StatusEffect> playerStatusEffects = status.GetCurrentStatusEffects();
+
+        if (playerStatusEffects.Contains(StatusEffect.SlowDown))
+        {
+            speedModifier = 0.5f;
+        }
+
+        else if (!playerStatusEffects.Contains(StatusEffect.SlowDown))
+        {
+            speedModifier = 1f;
+        }
+
+        if (playerStatusEffects.Contains(StatusEffect.Blindness) && !viewLight.gameObject.activeInHierarchy)
+        {
+            directionalLight.transform.Rotate(new Vector3(180, 0, 0));
+            viewLight.gameObject.SetActive(true);
+            Debug.Log("Help! I'm blind!");
+        }
+
+        else if (!playerStatusEffects.Contains(StatusEffect.Blindness) && viewLight.gameObject.activeInHierarchy)
+        {
+            directionalLight.transform.Rotate(new Vector3(180, 0, 0));
+            viewLight.gameObject.SetActive(false);
+            Debug.Log("I'm not blind anymore!");
+        }
+    }
 
     private bool PlayerVelocityIsIncreasing()
     {

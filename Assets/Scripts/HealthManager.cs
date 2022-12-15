@@ -5,6 +5,8 @@ using UnityEngine;
 public class HealthManager : MonoBehaviour
 {
     [SerializeField] private float health;
+    [SerializeField] private float burnChance;
+    [SerializeField] private float psnChance;
 
     public void ApplyDamage(float damage)
     {
@@ -13,8 +15,23 @@ public class HealthManager : MonoBehaviour
 
     public void ApplyDamage(float damage, string damageType)
     {
-        Debug.Log(damageType);
         health -= Mathf.Abs(damage);
+
+        switch (damageType) 
+        {
+            case "Fire":
+                Debug.Log("I got burned!");
+                break;
+            case "Poison":
+                Debug.Log("I got poisoned!");
+                break;
+            case "Ice":
+                Debug.Log("I got frozen!");
+                break;
+            default: 
+                Debug.Log("I got hurt!");
+                break;
+        }
     }
 
     public bool EntityIsDead()

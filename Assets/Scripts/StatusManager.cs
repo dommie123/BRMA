@@ -6,6 +6,7 @@ public class StatusManager : MonoBehaviour
 {
     [SerializeField] private float psnInterval;
     [SerializeField] private float brnSeconds;
+    [SerializeField] private bool setBlind;
 
     private List<StatusEffect> currentStatusEffects;
     private float psnTimer;
@@ -42,6 +43,8 @@ public class StatusManager : MonoBehaviour
                 CureStatusEffect(StatusEffect.Burned);
             }
         }
+
+        ToggleBlindness();
     }
 
     public List<StatusEffect> GetCurrentStatusEffects()
@@ -51,16 +54,34 @@ public class StatusManager : MonoBehaviour
 
     public void AddStatusEffect(StatusEffect effect)
     {
-        currentStatusEffects.Add(effect);
+        if (!currentStatusEffects.Contains(effect))
+        {
+            currentStatusEffects.Add(effect);
+        }
     }
 
     public void CureStatusEffect(StatusEffect effect)
     {
-        currentStatusEffects.Remove(effect);
+        if (currentStatusEffects.Contains(effect))
+        {
+            currentStatusEffects.Remove(effect);
+        }
     }
 
     public void CureAllStatusEffects()
     {
         currentStatusEffects.Clear();
+    }
+
+    private void ToggleBlindness()
+    {
+        if (setBlind)
+        {
+            CureStatusEffect(StatusEffect.Blindness);
+        }
+        else
+        {
+            AddStatusEffect(StatusEffect.Blindness);
+        }
     }
 }
