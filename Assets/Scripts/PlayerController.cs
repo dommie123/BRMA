@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Light directionalLight;
 
     private bool jumped;
+    private bool cameraFocusedOnPlayer;
     private float speedModifier;
     private CharacterController controller;
     private PlayerActions playerActions;
@@ -21,10 +22,16 @@ public class PlayerController : MonoBehaviour
     private HealthManager health;
     private StatusManager status;
     private Light viewLight;
+    public GameObject cameraTarget;
+
+    //dummy camera target DELETE LATER
+    public GameObject enemy;
 
     private void Awake() 
     {
         jumped = false;
+        cameraFocusedOnPlayer = true;
+        springArm.target = cameraTarget.transform; // sets the camera target here rather than through multiple places
         speedModifier = 1f;
         controller = GetComponent<CharacterController>();
         groundCheckComponent = transform.Find("Ground Check").GetComponent<GroundCheck>();
@@ -71,6 +78,8 @@ public class PlayerController : MonoBehaviour
         }
 
         UpdateAdditionalStatusEffects();
+
+        UpdateCamera();
     }
 
     private void UpdateMovement()
@@ -80,11 +89,11 @@ public class PlayerController : MonoBehaviour
         // Player input coordinates, put into vector2 to normalize the inputs
         Vector2 moveInput = new Vector2(inputVector.x, inputVector.y);
 
-        float x = moveInput.normalized.x;
-        float z = moveInput.normalized.y;
+        float x = moveInput.x;
+        float z = moveInput.y;
 
         // Camera forward and right vectors
-        Vector3 forward = Camera.main.transform.forward;
+        Vector3 forward = new Vector3(Camera.main.transform.forward.x, 0, Camera.main.transform.forward.z).normalized;
         Vector3 right = Camera.main.transform.right;
 
         // Create new forward/right vectors relative to camera's rotation, also only uses the x and z values so that the player doesnt skip in the air
@@ -92,7 +101,7 @@ public class PlayerController : MonoBehaviour
         Vector3 rightRelativeVerticalInput = x * new Vector3(right.x, 0, right.z);
 
         // Add the two vectors to get the new movement vector.
-        Vector3 movement = forwardRelativeVerticalInput.normalized + rightRelativeVerticalInput.normalized;
+        Vector3 movement = forwardRelativeVerticalInput + rightRelativeVerticalInput;
 
         controller.Move(movement * (speed * speedModifier) * Time.deltaTime);
     }
@@ -147,6 +156,20 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void UpdateCamera()
+    {
+        if (cameraFocusedOnPlayer == true) //THE PLAYERS TARGET SHOULDNT BE A FUCKING BOOL
+            {
+            cameraTarget.transform.position = transform.position;
+            springArm.targetArmLength = 7;
+            }
+        else if (cameraFocusedOnPlayer == false)
+        {
+            cameraTarget.transform.position = (transform.position + enemy.transform.position)/2;
+            springArm.targetArmLength = Vector3.Distance(transform.position, enemy.transform.position);
+        }
+    }
+
     private bool PlayerVelocityIsIncreasing()
     {
         return velocity.y < 0;
@@ -195,11 +218,13 @@ public class PlayerController : MonoBehaviour
     private void TargetLockOn(InputAction.CallbackContext context)
     {
         Debug.Log("Locking on");
+        cameraFocusedOnPlayer = false; //MAKING THE PLAYERS TARGET A BOOL IS FUCKING STUPID
     }
 
     private void CancelLockOn(InputAction.CallbackContext context)
     {
         Debug.Log("Cancel lock on");
+        cameraFocusedOnPlayer = true;
     }
 
     private void SwitchPreviousTarget(InputAction.CallbackContext context)

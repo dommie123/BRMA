@@ -14,6 +14,7 @@ public class MovingPlatform : MonoBehaviour
     private bool returnToOrigin;
     private Vector3 originPoint;
     private Rigidbody body;
+    public BoxCollider trigger;
 
     private void Awake()
     {
