@@ -159,10 +159,10 @@ public class PlayerController : MonoBehaviour
     private void UpdateCamera()
     {
         if (cameraFocusedOnPlayer == true) //THE PLAYERS TARGET SHOULDNT BE A FUCKING BOOL
-            {
+        {
             cameraTarget.transform.position = transform.position;
             springArm.targetArmLength = 7;
-            }
+        }
         else if (cameraFocusedOnPlayer == false)
         {
             cameraTarget.transform.position = (transform.position + enemy.transform.position)/2;
@@ -207,12 +207,12 @@ public class PlayerController : MonoBehaviour
 
     private void Pause(InputAction.CallbackContext context)
     {
-        Debug.Log("Pausing game");
+        GameManager.instance.PauseGame();
     }
 
     private void AnimalFriendPowerMenu(InputAction.CallbackContext context)
     {
-        Debug.Log("Opening Animal Friend Power Menu");
+        GameManager.instance.OpenAnimalFriendPowerMenu();
     }
 
     private void TargetLockOn(InputAction.CallbackContext context)
@@ -249,12 +249,12 @@ public class PlayerController : MonoBehaviour
 
     private void WeaponsSelectionMenu(InputAction.CallbackContext context)
     {
-        Debug.Log("Opening Weapons Select Menu");
+        GameManager.instance.OpenWeaponSelectionMenu();
     }
 
     private void GuardianEnhancementMenu(InputAction.CallbackContext context)
     {
-        Debug.Log("Opening Guardian Enhancement Menu");
+        GameManager.instance.OpenGuardianEnhancementMenu();
     }
     // End control functions
 }
