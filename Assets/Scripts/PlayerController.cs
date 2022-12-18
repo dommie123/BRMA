@@ -77,20 +77,22 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 inputVector = playerActions.PlayerController.Movement.ReadValue<Vector2>();
 
-        // Player input coordinates
-        float x = inputVector.x;
-        float z = inputVector.y;
+        // Player input coordinates, put into vector2 to normalize the inputs
+        Vector2 moveInput = new Vector2(inputVector.x, inputVector.y);
+
+        float x = moveInput.normalized.x;
+        float z = moveInput.normalized.y;
 
         // Camera forward and right vectors
         Vector3 forward = Camera.main.transform.forward;
         Vector3 right = Camera.main.transform.right;
 
-        // Create new forward/right vectors relative to camera's rotation
-        Vector3 forwardRelativeVerticalInput = z * forward;
-        Vector3 rightRelativeVerticalInput = x * right;
+        // Create new forward/right vectors relative to camera's rotation, also only uses the x and z values so that the player doesnt skip in the air
+        Vector3 forwardRelativeVerticalInput = z * new Vector3(forward.x, 0, forward.z);
+        Vector3 rightRelativeVerticalInput = x * new Vector3(right.x, 0, right.z);
 
         // Add the two vectors to get the new movement vector.
-        Vector3 movement = forwardRelativeVerticalInput + rightRelativeVerticalInput;
+        Vector3 movement = forwardRelativeVerticalInput.normalized + rightRelativeVerticalInput.normalized;
 
         controller.Move(movement * (speed * speedModifier) * Time.deltaTime);
     }
